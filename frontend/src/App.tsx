@@ -1,38 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BiMenu } from "react-icons/bi";
 
-function App() {
-  const [count, setCount] = useState(0)
+
+export default function App() {
 
   return (
-    <>
-      <div className='flex gap-2 justify-center'>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      
-      <h1 className='red'>Hello World</h1>
-      <p className='text-green-500'>Tailwind Funcionando</p>
-      
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className='w-[100vw] h-[100vh] flex flex-col gap-4 bg-neutral-200'>
+      <header className="flex justify-between items-center p-4 bg-white shadow-01">
+        <h1 className="text-lg">LegalAI</h1>
+        <BiMenu className="text-2xl" />
+      </header>
+
+
+
+    </div>
   )
 }
-
-export default App
