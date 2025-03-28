@@ -7,7 +7,7 @@ let canSendMessage: boolean = false;
 export default function App(){
   const [textInput, setTextInput] = useState<string>('');
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
-  
+
 
   function handleTextAreaChange(event: React.ChangeEvent<HTMLTextAreaElement>){
     setTextInput(event.target.value);
@@ -44,7 +44,7 @@ export default function App(){
       </header>
 
       <div className="p-4 pt-0 grow flex flex-col gap-4 overflow-hidden">
-        <main className="grow overflow-auto max-w-[80vw] self-center">
+        <main className="grow overflow-auto max-w-[80vw] self-center pr-2">
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>

@@ -21,3 +21,26 @@ h1, h2, h3, p, small, span{
 .shadow-01{
   box-shadow: 4px 4px 4px rgba(0,0,0, 0.15);
 }
+
+
+/* Fundo da barra de rolagem */
+::-webkit-scrollbar-track{
+  background: oklch(0.274 0.006 286.033); /* Cor do fundo */
+  /* box-shadow: 2px 2px 2px rgba(0,0,0, 0.35) inset; */
+}
+
+/* Scroll propriamente dito */
+::-webkit-scrollbar-thumb{
+  background: oklch(0.37 0.013 285.805); /* Cor do scroll */
+  transition: background 0.15s ease-in-out;
+}
+
+/* Efeito ao passar o mouse */
+::-webkit-scrollbar-thumb:hover{
+  background: oklch(0.442 0.017 285.786);
+}
+
+::-webkit-scrollbar{
+  width: 8px; /* Largura do scroll vertical */
+  height: 8px; /* Altura do scroll horizontal */
+}
