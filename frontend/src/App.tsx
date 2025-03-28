@@ -47,6 +47,8 @@ export default function App(){
 
 
   function sendMessageToAi(){
+    if(textInput === ''){ return; }
+
     const newMessages: Message[] = [...messages];
     newMessages.push({
       sender: 'user',
@@ -104,16 +106,12 @@ export default function App(){
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-        
         </main>
 
       
         <footer className="flex justify-between items-center p-4 bg-zinc-800 shadow-01 rounded-md">
           <textarea placeholder="O que deseja saber?" rows={1} cols={1} ref={textAreaRef} value={textInput} onChange={handleTextAreaChange} onKeyDown={handleTextAreaKeyDown} className="bg-transparent-50 text-white grow resize-none" />
-          <BiSend className="text-2xl hover:cursor-pointer" />
+          <BiSend className="text-2xl hover:cursor-pointer" onClick={sendMessageToAi} />
         </footer>
       </div>
     </div>
