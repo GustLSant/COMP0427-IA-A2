@@ -22,7 +22,6 @@ h1, h2, h3, p, small, span{
   box-shadow: 4px 4px 4px rgba(0,0,0, 0.15);
 }
 
-
 /* Fundo da barra de rolagem */
 ::-webkit-scrollbar-track{
   background: oklch(0.274 0.006 286.033); /* Cor do fundo */

@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { BiMenu, BiSend } from "react-icons/bi";
+import './App.css';
 
 
 type Message = {
@@ -21,7 +22,7 @@ const defaultMessages: Message[] = [
 
 export default function App(){
   const [textInput, setTextInput] = useState<string>('');
-  const [messages, setMessages] = useState<Message[]>(defaultMessages);
+  const [messages, setMessages] = useState<Message[]>([]);
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
 
@@ -69,51 +70,49 @@ export default function App(){
 
 
   return (
-    <div className='w-[100vw] h-[100vh] flex flex-col gap-4 bg-zinc-900 text-white'>
+    <div className='app w-[100vw] h-[100vh] flex flex-col gap-4 bg-zinc-900 text-white'>
       <header className="flex justify-between items-center p-4 bg-zinc-800 shadow-01">
         <h1 className="text-lg">LegalAI</h1>
-        <BiMenu className="text-2xl hover:cursor-pointer" />
+        <BiMenu className="text-3xl hover:cursor-pointer" />
       </header>
 
-      <div className="p-4 pt-0 grow flex flex-col gap-4 overflow-hidden">
-        <main className="grow overflow-auto max-w-[80vw] self-center pr-2 flex flex-col gap-4">
-          {
-            messages.map((message: Message)=>{
-              if(message.sender === 'ai'){
-                return(
-                  <div className="p-2 rounded-sm bg-blue-500">
-                    <p className="whitespace-pre-line">{message.data}</p>
-                  </div>
-                )
-              }
-              else{
-                return(
-                  <div className="self-end p-2 rounded-sm rounded-tr-none bg-red-500">
-                    <p className="whitespace-pre-line">{message.data}</p>
-                  </div>
-                )
-              }
-            })
-          }
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas illo, repellat, eos nihil deleniti explicabo vel consectetur, laboriosam temporibus corrupti aliquid maiores inventore maxime fugiat sit saepe quia ipsam consequatur?</p>
-        </main>
-
-      
-        <footer className="flex justify-between items-center p-4 bg-zinc-800 shadow-01 rounded-md">
+      <main className="grow overflow-hidden flex justify-center px-4">
+        {
+          (messages.length === 0)
+          ?
+          <div className="flex items-center">
+            <p className="logo-main-container">LegalAI</p>
+          </div>
+          :
+          <div className="grow overflow-auto pr-2 md:max-w-[80vw] lg:max-w-[80vw] flex flex-col gap-4">
+            {
+              messages.map((message: Message)=>{
+                if(message.sender === 'ai'){
+                  return(
+                    <div className="p-2 rounded-sm rounded-tl-none bg-blue-500">
+                      <p className="whitespace-pre-line">{message.data}</p>
+                    </div>
+                  )
+                }
+                else{
+                  return(
+                    <div className="self-end p-2 rounded-sm rounded-tr-none bg-red-500">
+                      <p className="whitespace-pre-line">{message.data}</p>
+                    </div>
+                  )
+                }
+              })
+            }
+          </div> 
+        }
+      </main>
+        
+      <footer className="p-4 pt-0">
+        <div className="flex justify-between items-center p-4 bg-zinc-800 shadow-01 rounded-md">
           <textarea placeholder="O que deseja saber?" rows={1} cols={1} ref={textAreaRef} value={textInput} onChange={handleTextAreaChange} onKeyDown={handleTextAreaKeyDown} className="bg-transparent-50 text-white grow resize-none" />
           <BiSend className="text-2xl hover:cursor-pointer" onClick={sendMessageToAi} />
-        </footer>
-      </div>
+        </div>
+      </footer>
     </div>
   )
 }
