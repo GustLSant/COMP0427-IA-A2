@@ -107,8 +107,8 @@ export default function App(){
         }
       </main>
         
-      <footer className="p-4 pt-0">
-        <div className="flex justify-between items-center p-4 bg-zinc-800 shadow-01 rounded-md">
+      <footer className="flex justify-center p-4 pt-0">
+        <div className="grow flex justify-between items-center md:max-w-[80vw] lg:max-w-[80vw] p-4 bg-zinc-800 shadow-01 rounded-md">
           <textarea placeholder="O que deseja saber?" rows={1} cols={1} ref={textAreaRef} value={textInput} onChange={handleTextAreaChange} onKeyDown={handleTextAreaKeyDown} className="bg-transparent-50 text-white grow resize-none" />
           <BiSend className="text-2xl hover:cursor-pointer" onClick={sendMessageToAi} />
         </div>
