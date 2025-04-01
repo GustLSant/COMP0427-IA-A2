@@ -17,7 +17,7 @@ async def upload_contract(file: UploadFile = File(...)):
     return {"analysis": analysis}
 
 
-@app.post("/analyze-text")
+@app.post("/api/analyze-text")
 async def analyze_text_api(request: TextRequest):
     result = analyze_text(request.text)
     return {"analysis": result}
