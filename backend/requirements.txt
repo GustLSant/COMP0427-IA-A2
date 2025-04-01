@@ -1,0 +1,6 @@
+fastapi==0.115.12
+uvicorn==0.34.0
+langchain==0.3.22
+pydanti==2.11.1
+python-multipart==0.0.20
+google-genai==2.1.0
