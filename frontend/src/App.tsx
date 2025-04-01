@@ -1,23 +1,11 @@
 import { useState, useRef } from "react";
 import { BiMenu, BiSend } from "react-icons/bi";
-import './App.css';
 
 
 type Message = {
   sender: 'user' | 'ai';
   data: string,
 }
-
-const defaultMessages: Message[] = [
-  {
-    sender: 'user',
-    data: 'Quem é o cabra mais inteligente do mundo?'
-  },
-  {
-    sender: 'ai',
-    data: 'Você mesmo!'
-  }
-]
 
 
 export default function App(){
@@ -81,7 +69,7 @@ export default function App(){
           (messages.length === 0)
           ?
           <div className="flex items-center">
-            <p className="logo-main-container">LegalAI</p>
+            <p className="opacity-5" style={{fontSize: `clamp(16px, 20vw, 96px)`}}>LegalAI</p>
           </div>
           :
           <div className="grow overflow-auto pr-2 md:max-w-[80vw] lg:max-w-[80vw] flex flex-col gap-4">
