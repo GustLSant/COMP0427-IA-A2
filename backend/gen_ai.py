@@ -1,6 +1,10 @@
 from google import genai
+from dotenv import load_dotenv
+import os
 
-GENAI_API_KEY = "chave"
+load_dotenv()
+
+GENAI_API_KEY = os.environ['GENAI_API_KEY']
 
 client = genai.Client(api_key=GENAI_API_KEY)
 model = "gemini-2.0-flash"
@@ -13,11 +17,11 @@ def analyze_contract(text: str) -> str:
         f"{text}\n\nResumo jurídico detalhado:"
     )
 
-    response = client.models.generate_content(model, prompt)
-    return response.text
+    response = client.models.generate_content(model=model, contents=prompt)
+    return response.text or ""
 
 def analyze_text(text: str) -> str:
     prompt = f"Analise o seguinte texto e forneça um resumo jurídico: {text}"
     
-    response = client.models.generate_content(model, prompt)
-    return response.text
+    response = client.models.generate_content(model=model, contents=prompt)
+    return response.text or ""
