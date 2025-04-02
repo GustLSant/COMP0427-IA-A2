@@ -1,6 +1,9 @@
+import axios from "axios";
 import { useState, useRef } from "react";
 import { BiMenu, BiSend } from "react-icons/bi";
 
+
+const API_URL = 'http://127.0.0.1:8000/api';
 
 type Message = {
   sender: 'user' | 'ai';
@@ -57,12 +60,28 @@ export default function App(){
   }
 
 
+  async function handleClickTestRequest(): Promise<void>{
+    try{
+      const response = await axios.post(`${API_URL}/analyze-contract`, {
+        contract_text: 'Texto da response de debug',
+      });
+
+      console.log('Response: ', response);
+    }
+    catch(error){
+      console.error("Error:", error);
+    }
+  }
+
+
   return (
     <div className='app w-[100vw] h-[100vh] flex flex-col gap-4 bg-zinc-900 text-white'>
       <header className="flex justify-between items-center p-4 bg-zinc-800 shadow-01">
         <h1 className="text-lg">LegalAI</h1>
         <BiMenu className="text-3xl hover:cursor-pointer" />
       </header>
+
+      <p onClick={handleClickTestRequest}>Teste Integração</p>
 
       <main className="grow overflow-hidden flex justify-center px-4">
         {
