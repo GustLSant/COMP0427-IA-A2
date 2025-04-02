@@ -1,11 +1,22 @@
 from fastapi import FastAPI, UploadFile, File
+from fastapi.middleware.cors import CORSMiddleware
 from .gen_ai import analyze_contract, analyze_text
 from .serializers import TextRequest, ContractAnalysisRequest
 
 app = FastAPI(title="Consultoria Jurídica com IA", version="1.0")
 
+# Configuração do CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permite requisições de qualquer origem (para desenvolvimento)
+    allow_credentials=True,
+    allow_methods=["*"],  # Permite todos os métodos (GET, POST, etc.)
+    allow_headers=["*"],  # Permite todos os headers
+)
+
 @app.post("/api/analyze-contract")
 async def analyze_contract_api(request: ContractAnalysisRequest):
+    print('request: ', request)
     analysis = analyze_contract(request.contract_text)
     return {"analysis": analysis}
 
