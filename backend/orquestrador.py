@@ -14,9 +14,14 @@ TAVILY_API_KEY = os.environ['TAVILY_API_KEY']
 llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0, api_key=GENAI_API_KEY)
 
 
-prompt = "Você é um assistente jurídico que traduz textos jurídicos complexos em linguagem simples! " + \
+prompt_texto = "Você é um assistente jurídico que traduz textos jurídicos complexos em linguagem simples! " + \
     "Seu nome é LegalAI. Ajude o usuário a entender o conteúdo jurídico."
 
+prompt_ler_contrato = "Você é um assistente jurídico que analisa contratos e fornece um resumo jurídico detalhado em uma linguagem simples" + \
+    "Seu nome é LegalAI. Ajude o usuário a entender o conteúdo jurídico do contrato. Ofereça um resumo detalhado e destaque as partes mais importantes." + \
+    "Indique se no contrato há alguma clausula que não é comum em contratos semelhantes." + \
+    "Indique se há alguma clausula que é prejudicial ao usuário."
+    
 
 search = TavilySearchResults(max_results=2, 
         include_answer=True,
@@ -34,8 +39,8 @@ model = init_chat_model(
 
 model.bind_tools(tools)
 
-agent = create_react_agent(model=model, tools=tools, prompt=prompt)
 def analyze_text(text: str) -> str:
+    agent = create_react_agent(model=model, tools=tools, prompt=prompt_texto)
     # messages.append(("human", text))
     response = agent.invoke({"messages": [HumanMessage(content=text)]})
     
