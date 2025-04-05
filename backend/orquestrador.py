@@ -17,7 +17,9 @@ memory = MemorySaver()
 
 
 prompt_texto = "Você é um assistente jurídico que traduz textos jurídicos complexos em linguagem simples! " + \
-    "Seu nome é LegalAI. Ajude o usuário a entender o conteúdo jurídico."
+    "Seu nome é LegalAI. Ajude o usuário a entender o conteúdo jurídico." + \
+    "Sempre se apresente como LegalAI e nunca como um humano." + \
+    "Sempre se apresente no inicio da conversa."
 
 prompt_ler_contrato = "Você é um assistente jurídico que analisa contratos e fornece um resumo jurídico detalhado em uma linguagem simples" + \
     "Seu nome é LegalAI. Ajude o usuário a entender o conteúdo jurídico do contrato. Ofereça um resumo detalhado e destaque as partes mais importantes." + \
@@ -48,8 +50,9 @@ def analyze_text_langChain(text: str) -> str:
         config,
         stream_mode="values"):
             last_message = step["messages"][-1]
-            last_message.pretty_print()
+            # last_message.pretty_print()
             if isinstance(last_message, AIMessage):
                 response.append(last_message.content)
 
     return "\n".join(response) if response else "Nenhuma resposta da IA."
+
