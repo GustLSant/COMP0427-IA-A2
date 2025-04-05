@@ -1,8 +1,8 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-from .gen_ai import analyze_contract, analyze_text
+from .gen_ai import analyze_contract
 from .serializers import TextRequest, ContractAnalysisRequest
-
+from .orquestrador import analyze_text_langChain
 from .extractPdf import extract_text_from_pdf
 
 app = FastAPI(title="Consultoria Jurídica com IA", version="1.0")
@@ -39,6 +39,6 @@ async def upload_contract(file: UploadFile = File(...)):
 
 @app.post("/api/analyze-text")
 async def analyze_text_api(request: TextRequest):
-    result = analyze_text(request.text)
+    result = analyze_text_langChain(request.text)
     return {"analysis": result}
      
