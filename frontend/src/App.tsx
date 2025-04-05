@@ -10,6 +10,12 @@ type Message = {
   data: string,
 }
 
+type Response = {
+  data: {
+    analysis: string,
+  }
+}
+
 
 export default function App(){
   const [textInput, setTextInput] = useState<string>('');
@@ -38,20 +44,32 @@ export default function App(){
   }
 
 
-  function sendMessageToAi(){
+  async function sendMessageToAi(){
     if(textInput === ''){ return; }
 
-    const newMessages: Message[] = [...messages];
-    newMessages.push({
-      sender: 'user',
-      data: textInput
-    })
-    newMessages.push({
-      sender: 'ai',
-      data: 'Resposta da IA'
-    })
-    setMessages(newMessages);
-    setTextInput('');
+
+    try{
+      const response: Response = await axios.post(`${API_URL}/analyze-text`, {
+        text: textInput,
+      });
+
+      const newMessages: Message[] = [...messages];
+      newMessages.push({
+        sender: 'user',
+        data: textInput
+      })
+      newMessages.push({
+        sender: 'ai',
+        data: response.data.analysis
+      })
+      setMessages(newMessages);
+      setTextInput('');
+
+      console.log('Response: ', response);
+    }
+    catch(error){
+      console.error("Error:", error);
+    }
 
     // reset na altura do input
     if(textAreaRef.current){
