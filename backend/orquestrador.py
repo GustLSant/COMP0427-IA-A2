@@ -1,7 +1,5 @@
-import getpass
 from dotenv import load_dotenv
 import os
-from langchain_google_genai import ChatGoogleGenerativeAI
 load_dotenv()
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain.chat_models import init_chat_model
