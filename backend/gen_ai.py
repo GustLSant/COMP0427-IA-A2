@@ -19,9 +19,3 @@ def analyze_contract(text: str) -> str:
 
     response = client.models.generate_content(model=model, contents=prompt)
     return response.text or ""
-
-def analyze_text(text: str) -> str:
-    prompt = f"Analise o seguinte texto e forneça um resumo jurídico: {text}"
-    
-    response = client.models.generate_content(model=model, contents=prompt)
-    return response.text or ""
