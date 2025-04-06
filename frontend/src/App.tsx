@@ -69,15 +69,17 @@ export default function App(){
         text: textInput,
       });
 
+      // tratamento da resposta da IA
       const rawHtmlString: string | Promise<string> = await marked.parse(response.data.analysis); // converte para HTML
-      const sanitizedHtml = DOMPurify.sanitize(rawHtmlString); // Remove scripts e tags maliciosas
+      const sanitizedHtmlString: string = DOMPurify.sanitize(rawHtmlString); // remove scripts e tags maliciosas
 
+      // adicao da resposta da IA no chat
       setMessages((prevState: Message[])=>{
         const newMessages: Message[] = [...prevState];
 
         newMessages.push({
           sender: 'ai',
-          data: sanitizedHtml
+          data: sanitizedHtmlString
         })
 
         return newMessages;
@@ -87,6 +89,7 @@ export default function App(){
       console.log('response da API: ', response);
     }
     catch(error){
+      // adicao resposta de erro no chat
       setMessages((prevState: Message[])=>{
         const newMessages: Message[] = [...prevState];
 
