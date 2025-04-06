@@ -9,3 +9,4 @@ fastapi[standard]==0.115.12
 langchain-community==0.3.21
 # langchain[google-vertexai] :  pip install -qU "langchain[google-vertexai]"
 langgraph==0.3.25
+fpdf2==2.8.2
