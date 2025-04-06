@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useState, useRef } from "react";
-import { BiMenu, BiSend } from "react-icons/bi";
+import { useState, useRef, useEffect } from "react";
+import { BiMenu, BiSend, BiLoaderAlt } from "react-icons/bi";
 
 
 const API_URL = 'http://127.0.0.1:8000/api';
@@ -20,6 +20,8 @@ type Response = {
 export default function App(){
   const [textInput, setTextInput] = useState<string>('');
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const chatRef = useRef<HTMLDivElement | null>(null);
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null);
 
 
@@ -38,68 +40,75 @@ export default function App(){
       event.preventDefault();
       sendMessageToAi();
     }
-    else{ // quebra de linha comum
-      console.log('quebra de linha');
-    }
   }
 
 
   async function sendMessageToAi(){
     if(textInput === ''){ return; }
 
+    setIsLoading(true);
+
+    // adicao da mensagem do usuario no chat antes de receber a resposta da IA
+    setMessages((prevState: Message[])=>{
+      const newMessages: Message[] = [...prevState];
+      
+      newMessages.push({
+        sender: 'user',
+        data: textInput
+      })
+      
+      return newMessages;
+    });
+    setTextInput('');
+    if(textAreaRef.current){ textAreaRef.current.style.height = 'auto'; } // reset na altura do input
 
     try{
       const response: Response = await axios.post(`${API_URL}/analyze-text`, {
         text: textInput,
       });
 
-      const newMessages: Message[] = [...messages];
-      newMessages.push({
-        sender: 'user',
-        data: textInput
-      })
-      newMessages.push({
-        sender: 'ai',
-        data: response.data.analysis
-      })
-      setMessages(newMessages);
-      setTextInput('');
+      setMessages((prevState: Message[])=>{
+        const newMessages: Message[] = [...prevState];
 
-      console.log('Response: ', response);
-    }
-    catch(error){
-      console.error("Error:", error);
-    }
+        newMessages.push({
+          sender: 'ai',
+          data: response.data.analysis
+        })
 
-    // reset na altura do input
-    if(textAreaRef.current){
-      textAreaRef.current.style.height = 'auto';
-    }
-  }
-
-
-  async function handleClickTestRequest(): Promise<void>{
-    try{
-      const response = await axios.post(`${API_URL}/analyze-contract`, {
-        contract_text: 'Texto da response de debug',
+        return newMessages;
       });
 
-      console.log('Response: ', response);
+      setIsLoading(false);
+      console.log('response da API: ', response);
     }
     catch(error){
+      setMessages((prevState: Message[])=>{
+        const newMessages: Message[] = [...prevState];
+
+        newMessages.push({
+          sender: 'ai',
+          data: 'Algo deu errado, por favor tente novamente.'
+        })
+
+        return newMessages;
+      });
       console.error("Error:", error);
+      setIsLoading(false);
     }
   }
+
+
+  useEffect(()=>{
+    if(chatRef.current){ chatRef.current.scrollTop = chatRef.current.scrollHeight; } // scrollando o chat para o final
+  }, [messages])
 
 
   return (
-    <div className='app w-[100vw] h-[100vh] flex flex-col gap-4 bg-zinc-900 text-white'>
+    <div className='app w-[100vw] h-[100vh] flex flex-col gap-6 bg-zinc-900 text-white'>
       <header className="flex justify-between items-center p-4 bg-zinc-800 shadow-01">
-        <h1 className="text-lg">LegalAI</h1>
+        <h1 className="text-xl">LegalAI</h1>
         <BiMenu className="text-3xl hover:cursor-pointer" />
       </header>
-
-      <p onClick={handleClickTestRequest}>Teste Integração</p>
 
       <main className="grow overflow-hidden flex justify-center px-4">
         {
@@ -109,24 +118,30 @@ export default function App(){
             <p className="opacity-5" style={{fontSize: `clamp(16px, 20vw, 96px)`}}>LegalAI</p>
           </div>
           :
-          <div className="grow overflow-auto pr-2 md:max-w-[80vw] lg:max-w-[80vw] flex flex-col gap-4">
+          <div ref={chatRef} className="grow overflow-auto pr-2 md:max-w-[80vw] lg:max-w-[80vw] flex flex-col gap-6">
             {
-              messages.map((message: Message)=>{
+              messages.map((message: Message, idx: number)=>{
                 if(message.sender === 'ai'){
                   return(
-                    <div className="p-2 rounded-sm rounded-tl-none bg-blue-500">
+                    <div key={idx} className="">
                       <p className="whitespace-pre-line">{message.data}</p>
                     </div>
                   )
                 }
                 else{
                   return(
-                    <div className="self-end p-2 rounded-sm rounded-tr-none bg-red-500">
+                    <div key={idx} className="self-end p-2 rounded-sm rounded-tr-none bg-zinc-800">
                       <p className="whitespace-pre-line">{message.data}</p>
                     </div>
                   )
                 }
               })
+            }
+            {
+              (isLoading) &&
+              <div className="self-start">
+                <BiLoaderAlt className="rotate text-xl"  />
+              </div>
             }
           </div> 
         }
@@ -134,8 +149,12 @@ export default function App(){
         
       <footer className="flex justify-center p-4 pt-0">
         <div className="grow flex justify-between items-center md:max-w-[80vw] lg:max-w-[80vw] p-4 bg-zinc-800 shadow-01 rounded-md">
-          <textarea placeholder="O que deseja saber?" rows={1} cols={1} ref={textAreaRef} value={textInput} onChange={handleTextAreaChange} onKeyDown={handleTextAreaKeyDown} className="bg-transparent-50 text-white grow resize-none" />
-          <BiSend className="text-2xl hover:cursor-pointer" onClick={sendMessageToAi} />
+          <textarea placeholder={(isLoading) ? "Carregando..." : "O que deseja saber?"} rows={1} cols={1} ref={textAreaRef} value={textInput} onChange={handleTextAreaChange} disabled={isLoading} onKeyDown={handleTextAreaKeyDown} className="bg-transparent-50 text-white grow resize-none" />
+          {
+            (isLoading) ?
+            <BiLoaderAlt className="rotate text-xl"  /> :
+            <BiSend className="text-2xl hover:cursor-pointer" onClick={sendMessageToAi} />
+          }
         </div>
       </footer>
     </div>
