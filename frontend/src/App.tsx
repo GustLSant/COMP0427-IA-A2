@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useState, useRef, useEffect } from "react";
+import { marked } from "marked";
+import DOMPurify from "dompurify";
 import { BiMenu, BiSend, BiLoaderAlt } from "react-icons/bi";
 
 
@@ -67,12 +69,15 @@ export default function App(){
         text: textInput,
       });
 
+      const rawHtmlString: string | Promise<string> = await marked.parse(response.data.analysis); // converte para HTML
+      const sanitizedHtml = DOMPurify.sanitize(rawHtmlString); // Remove scripts e tags maliciosas
+
       setMessages((prevState: Message[])=>{
         const newMessages: Message[] = [...prevState];
 
         newMessages.push({
           sender: 'ai',
-          data: response.data.analysis
+          data: sanitizedHtml
         })
 
         return newMessages;
@@ -124,7 +129,7 @@ export default function App(){
                 if(message.sender === 'ai'){
                   return(
                     <div key={idx} className="">
-                      <p className="whitespace-pre-line">{message.data}</p>
+                      <div className="prose prose-invert" dangerouslySetInnerHTML={{__html: message.data}}></div>
                     </div>
                   )
                 }
