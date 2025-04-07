@@ -53,7 +53,7 @@ export default function App(){
 
 
   async function sendMessageToAi(){
-    if(textInput === ''){ return; }
+    if(textInput.trim() === ''){ return; }
 
     setIsLoading(true);
 
@@ -143,12 +143,33 @@ export default function App(){
   }
 
 
+  async function handleClickUploadContract(){
+    const file = document.getElementById('file-input').files[0]
+    console.log(file)
+
+    try{
+      const response: Response = await axios.post(`${API_URL}/analyze-text`, {
+        text: textInput,
+      });
+      console.log('response da API: ', response);
+    }
+    catch(error){
+      console.error("Error:", error);
+    }
+  }
+
+
   return (
     <div className='app w-[100vw] h-[100vh] flex flex-col gap-6 bg-zinc-900 text-white'>
       <header className="flex justify-between items-center p-4 bg-zinc-800 shadow-01">
         <h1 className="text-xl">LegalAI</h1>
         <BiMenu className="text-3xl hover:cursor-pointer" />
       </header>
+
+      <div className="flex flex-col">
+        <p onClick={handleClickUploadContract} className="p-4 bg-gray-800 self-start hover:cursor-pointer">TestUpload Contract</p>
+        <input type="file" name="" id="file-input" />
+      </div>
 
       <main className="grow overflow-hidden flex justify-center px-4">
         {
