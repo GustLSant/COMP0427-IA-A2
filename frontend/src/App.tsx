@@ -2,14 +2,13 @@ import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
-import { BiMenu, BiSend, BiLoaderAlt, BiDownload  } from "react-icons/bi";
+import { BiMenu, BiSend, BiLoaderAlt } from "react-icons/bi";
 
 
 const API_URL = 'http://127.0.0.1:8000/api';
 
 type Message = {
-  sender: 'user' | 'ai',
-  type: 'text' | 'pdf',
+  sender: 'user' | 'ai';
   data: string,
 }
 
@@ -17,12 +16,6 @@ type Response = {
   data: {
     analysis: string,
   }
-}
-
-const pdfTestMessage: Message = {
-  sender: 'ai',
-  type: 'pdf',
-  data: 'data:application/pdf;base64,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'
 }
 
 
@@ -63,7 +56,6 @@ export default function App(){
       
       newMessages.push({
         sender: 'user',
-        type: "text",
         data: textInput
       })
       
@@ -77,15 +69,9 @@ export default function App(){
         text: textInput,
       });
 
-      const isMessagePdf: boolean = response.data.analysis.includes('data:application/pdf');
-      let newMessageData: string = response.data.analysis;
-
-      // tratamento da resposta da IA (caso seja um texto comum)
-      if(!isMessagePdf){
-        const rawHtmlString: string | Promise<string> = await marked.parse(response.data.analysis); // converte para HTML
-        const sanitizedHtmlString: string = DOMPurify.sanitize(rawHtmlString); // remove scripts e tags maliciosas
-        newMessageData = sanitizedHtmlString;
-      }
+      // tratamento da resposta da IA
+      const rawHtmlString: string | Promise<string> = await marked.parse(response.data.analysis); // converte para HTML
+      const sanitizedHtmlString: string = DOMPurify.sanitize(rawHtmlString); // remove scripts e tags maliciosas
 
       // adicao da resposta da IA no chat
       setMessages((prevState: Message[])=>{
@@ -93,8 +79,7 @@ export default function App(){
 
         newMessages.push({
           sender: 'ai',
-          type: (isMessagePdf) ? 'pdf' : 'text',
-          data: newMessageData
+          data: sanitizedHtmlString
         })
 
         return newMessages;
@@ -110,7 +95,6 @@ export default function App(){
 
         newMessages.push({
           sender: 'ai',
-          type: "text",
           data: 'Algo deu errado, por favor tente novamente.'
         })
 
@@ -125,17 +109,6 @@ export default function App(){
   useEffect(()=>{
     if(chatRef.current){ chatRef.current.scrollTop = chatRef.current.scrollHeight; } // scrollando o chat para o final
   }, [messages])
-
-
-  function handleClickDownloadPdf(pdfData: string){
-    const link = document.createElement("a");
-    console.log('pdfData: ', pdfData)
-    link.href = pdfData.trim().replace(/^["']+|["']+$/g, "").replace(/\s/g, ""); // tratamento da resposta;
-    link.download = 'pdf-legalai';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
 
 
   return (
@@ -157,21 +130,11 @@ export default function App(){
             {
               messages.map((message: Message, idx: number)=>{
                 if(message.sender === 'ai'){
-                  if(message.type === 'pdf'){
-                    return(
-                      <div key={idx} onClick={()=>{handleClickDownloadPdf(message.data)}} className="flex items-center gap-2 self-start bg-zinc-800 p-2 px-4 rounded-sm hover:cursor-pointer hover:brightness-125">
-                        <BiDownload className="text-xl" />
-                        <p>Baixar PDF</p>
-                      </div>
-                    )
-                  }
-                  else{
-                    return(
-                      <div key={idx} className="">
-                        <div className="prose prose-invert" dangerouslySetInnerHTML={{__html: message.data}}></div>
-                      </div>
-                    )
-                  }
+                  return(
+                    <div key={idx} className="">
+                      <div className="prose prose-invert" dangerouslySetInnerHTML={{__html: message.data}}></div>
+                    </div>
+                  )
                 }
                 else{
                   return(

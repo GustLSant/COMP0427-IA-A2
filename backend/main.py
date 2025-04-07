@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from .gen_ai import analyze_contract
 from .serializers import TextRequest, ContractAnalysisRequest
 from .orquestrador import analyze_text_langChain
+from .extractPdf import extract_text_from_pdf
+
 app = FastAPI(title="Consultoria Jurídica com IA", version="1.0")
 
 # Configuração do CORS
@@ -23,7 +25,14 @@ async def analyze_contract_api(request: ContractAnalysisRequest):
 @app.post("/api/upload-contract")
 async def upload_contract(file: UploadFile = File(...)):
     content = await file.read()
-    text = content.decode("utf-8")
+    
+    # If the file is a PDF
+    if file.content_type == "application/pdf":
+        text = extract_text_from_pdf(content)
+    else:
+        text = content.decode("utf-8")
+    # Process the text
+    
     analysis = analyze_contract(text)
     return {"analysis": analysis}
 
@@ -32,3 +41,4 @@ async def upload_contract(file: UploadFile = File(...)):
 async def analyze_text_api(request: TextRequest):
     result = analyze_text_langChain(request.text)
     return {"analysis": result}
+     
