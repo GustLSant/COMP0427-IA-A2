@@ -2,6 +2,9 @@ import io
 from PyPDF2 import PdfReader
 from pdf2image import convert_from_bytes
 import pytesseract
+from pydantic import BaseModel
+import base64
+
 
 def extract_text_from_pdf(pdf_content):
     pdf_stream = io.BytesIO(pdf_content)
@@ -22,3 +25,8 @@ def extract_text_from_pdf(pdf_content):
             text_parts.append(f"\n\n--- Page {i + 1} (OCR) ---\n{ocr_text.strip()}")
     
     return '\n'.join(text_parts)
+
+class FileBase64Request(BaseModel):
+    file_base64: str
+    filename: str  # optional but useful
+    content_type: str  # like "application/pdf" or "text/plain"
