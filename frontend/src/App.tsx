@@ -101,7 +101,7 @@ export default function App(){
       });
 
       setIsLoading(false);
-      console.log('response da API: ', response);
+      // console.log('response da API: ', response);
     }
     catch(error){
       // adicao resposta de erro no chat
@@ -125,6 +125,11 @@ export default function App(){
   useEffect(()=>{
     if(chatRef.current){ chatRef.current.scrollTop = chatRef.current.scrollHeight; } // scrollando o chat para o final
   }, [messages])
+
+
+  useEffect(()=>{
+    textAreaRef.current?.focus();
+  }, [isLoading])
 
 
   function handleClickDownloadPdf(pdfData: string){
