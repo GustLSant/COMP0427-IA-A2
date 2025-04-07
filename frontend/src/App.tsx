@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
 import { BiMenu, BiSend, BiLoaderAlt, BiDownload  } from "react-icons/bi";
+import UploadContract from "./UploadContract";
 
 
 const API_URL = 'http://127.0.0.1:8000/api';
@@ -49,6 +50,19 @@ export default function App(){
       event.preventDefault();
       sendMessageToAi();
     }
+  }
+
+  function handleContractUploadResponse(responseText: string){
+    const isPdf = responseText.includes("data:application/pdf");
+  
+    const newMessage: Message = {
+      sender: 'ai',
+      type: isPdf ? "pdf" : "text",
+      data: responseText
+    };
+  
+    // Atualiza as mensagens
+    setMessages(prev => [...prev, newMessage]);
   }
 
 
@@ -101,7 +115,7 @@ export default function App(){
       });
 
       setIsLoading(false);
-      console.log('response da API: ', response);
+      // console.log('response da API: ', response);
     }
     catch(error){
       // adicao resposta de erro no chat
@@ -127,6 +141,11 @@ export default function App(){
   }, [messages])
 
 
+  useEffect(()=>{
+    textAreaRef.current?.focus();
+  }, [isLoading])
+
+
   function handleClickDownloadPdf(pdfData: string){
     const link = document.createElement("a");
     console.log('pdfData: ', pdfData)
@@ -145,52 +164,46 @@ export default function App(){
         <BiMenu className="text-3xl hover:cursor-pointer" />
       </header>
 
-      <main className="grow overflow-hidden flex justify-center px-4">
-        {
-          (messages.length === 0)
-          ?
-          <div className="flex items-center">
-            <p className="opacity-5" style={{fontSize: `clamp(16px, 20vw, 96px)`}}>LegalAI</p>
+      <main className="grow overflow-hidden flex flex-col items-center px-4 gap-4">
+  {
+    (messages.length === 0)
+    ?
+    <div className="flex items-center">
+      <p className="opacity-5" style={{fontSize: `clamp(16px, 20vw, 96px)`}}>LegalAI</p>
+    </div>
+    :
+    <div
+      ref={chatRef}
+      className="w-full grow overflow-y-auto p-4 flex flex-col gap-2"
+    >
+      {
+        messages.map((msg, idx) => (
+          <div
+            key={idx}
+            className={`p-3 rounded-lg ${msg.sender === 'user' ? 'bg-blue-600 self-end' : 'bg-zinc-700 self-start'} max-w-[90%]`}
+          >
+            {
+              msg.type === "text"
+              ? <div dangerouslySetInnerHTML={{__html: msg.data}} />
+              : (
+                  <button
+                    onClick={() => handleClickDownloadPdf(msg.data)}
+                    className="flex items-center gap-2 text-sm underline"
+                  >
+                    <BiDownload /> Baixar análise PDF
+                  </button>
+                )
+            }
           </div>
-          :
-          <div ref={chatRef} className="grow overflow-auto pr-2 md:max-w-[80vw] lg:max-w-[80vw] flex flex-col gap-6">
-            {
-              messages.map((message: Message, idx: number)=>{
-                if(message.sender === 'ai'){
-                  if(message.type === 'pdf'){
-                    return(
-                      <div key={idx} onClick={()=>{handleClickDownloadPdf(message.data)}} className="flex items-center gap-2 self-start bg-zinc-800 p-2 px-4 rounded-sm hover:cursor-pointer hover:brightness-125">
-                        <BiDownload className="text-xl" />
-                        <p>Baixar PDF</p>
-                      </div>
-                    )
-                  }
-                  else{
-                    return(
-                      <div key={idx} className="">
-                        <div className="prose prose-invert" dangerouslySetInnerHTML={{__html: message.data}}></div>
-                      </div>
-                    )
-                  }
-                }
-                else{
-                  return(
-                    <div key={idx} className="self-end p-2 rounded-sm rounded-tr-none bg-zinc-800">
-                      <p className="whitespace-pre-line">{message.data}</p>
-                    </div>
-                  )
-                }
-              })
-            }
-            {
-              (isLoading) &&
-              <div className="self-start">
-                <BiLoaderAlt className="rotate text-xl"  />
-              </div>
-            }
-          </div> 
-        }
-      </main>
+        ))
+      }
+    </div>
+  }
+
+  {/* Upload de contrato */}
+  <UploadContract onUploadComplete={handleContractUploadResponse} />
+</main>
+
         
       <footer className="flex justify-center p-4 pt-0">
         <div className="grow flex justify-between items-center md:max-w-[80vw] lg:max-w-[80vw] p-4 bg-zinc-800 shadow-01 rounded-md">
