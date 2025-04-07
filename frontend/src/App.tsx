@@ -146,15 +146,20 @@ export default function App(){
   async function handleClickUploadContract(){
     const file = document.getElementById('file-input').files[0]
     console.log(file)
-
-    try{
-      const response: Response = await axios.post(`${API_URL}/analyze-text`, {
-        text: textInput,
+    
+    const formData = new FormData();
+    formData.append("file", file);
+  
+    try {
+      const response = await axios.post(`${API_URL}/analyze-contract`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-      console.log('response da API: ', response);
-    }
-    catch(error){
-      console.error("Error:", error);
+  
+      console.log('response da API: ', response.data);
+    } catch (error) {
+      console.error("Erro ao enviar contrato:", error);
     }
   }
 

@@ -10,6 +10,7 @@ langchain-community==0.3.21
 # langchain[google-vertexai] :  pip install -qU "langchain[google-vertexai]"
 langgraph==0.3.25
 fpdf2==2.8.2
-PyPDF2
-pytesseract
-pdf2image
+# PyPDF2
+# pytesseract
+# pdf2image
+PyMupdf==1.25.5

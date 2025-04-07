@@ -8,7 +8,7 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import MemorySaver
 from .tools import generate_pdf
-
+from .extractPdf import extract_text_from_pdf
 GENAI_API_KEY = os.environ['GENAI_API_KEY']
 TAVILY_API_KEY = os.environ['TAVILY_API_KEY']
 
@@ -91,6 +91,32 @@ def analyze_text_langChain(text: str) -> str:
         stream_mode="values"):
             last_message = step["messages"][-1]
             # last_message.pretty_print()
+            if isinstance(last_message, AIMessage):
+                response.append(last_message.content)
+
+    return "\n".join(response) if response else "Nenhuma resposta da IA."
+
+
+def analyze_contract_langChain(pdf_bytes: bytes) -> str:
+    """Analisa o conteúdo de um contrato PDF usando LangChain."""
+    # Extrair texto do PDF
+    extracted_text = extract_text_from_pdf(pdf_bytes)
+    
+    # Verifica se o conteúdo extraído tem texto suficiente
+    if not extracted_text.strip():
+        return "O PDF não contém texto legível ou está vazio."
+    tools = [search]
+    # Criar agente com prompt específico para contratos
+    agent = create_react_agent(model=model, tools=tools, prompt=prompt_ler_contrato)
+
+    response = []
+    config = {"configurable": {"thread_id": "contract_analysis"}}
+    
+    for step in agent.stream(
+        {"messages": [HumanMessage(content=extracted_text)]},
+        config,
+        stream_mode="values"):
+            last_message = step["messages"][-1]
             if isinstance(last_message, AIMessage):
                 response.append(last_message.content)
 
