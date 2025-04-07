@@ -7,12 +7,12 @@ from langchain.tools import Tool
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import MemorySaver
+from .tools import generate_pdf
 
 GENAI_API_KEY = os.environ['GENAI_API_KEY']
 TAVILY_API_KEY = os.environ['TAVILY_API_KEY']
 
 memory = MemorySaver()
-# llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0, api_key=GENAI_API_KEY)
 
 
 prompt_texto = "Você é um assistente jurídico que traduz textos jurídicos complexos em linguagem simples! " + \
@@ -36,19 +36,7 @@ search = TavilySearchResults(max_results=2,
         tavily_api_key=TAVILY_API_KEY
     )
 
-from fpdf import FPDF
-from base64 import b64encode
-def generate_pdf(content: str):
-    base64_pdf_mime = "data:application/pdf;base64,"
-    pdf = FPDF()
-    pdf.add_page()
 
-    pdf.set_font("helvetica", size=11)
-    pdf.multi_cell(0, 10, content)
-
-    pdf_bytes = pdf.output()
-    base64_pdf = base64_pdf_mime + b64encode(pdf_bytes).decode("utf-8")
-    return base64_pdf
 
 pdf_tool = Tool(
     name="GerarPDF",
@@ -79,7 +67,3 @@ def analyze_text_langChain(text: str) -> str:
                 response.append(last_message.content)
 
     return "\n".join(response) if response else "Nenhuma resposta da IA."
-
-# print(analyze_text_langChain("me fale sobre uma das leis do consumidor"))
-# print(analyze_text_langChain("pode gerar um pdf sobre essa lei"))
-
