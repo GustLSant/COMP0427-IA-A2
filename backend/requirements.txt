@@ -1,6 +1,6 @@
 fastapi==0.115.12
 uvicorn==0.34.0
-langchain==0.3.23
+langchain==0.3.22
 pydantic==2.11.1
 python-multipart==0.0.20
 google-genai==1.9.0
@@ -9,6 +9,7 @@ fastapi[standard]==0.115.12
 langchain-community==0.3.21
 # langchain[google-vertexai] :  pip install -qU "langchain[google-vertexai]"
 langgraph==0.3.25
+fpdf2==2.8.2
 PyPDF2
 pytesseract
 pdf2image
