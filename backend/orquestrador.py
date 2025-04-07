@@ -3,6 +3,7 @@ import os
 load_dotenv()
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain.chat_models import init_chat_model
+from langchain.tools import Tool
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import MemorySaver
@@ -19,6 +20,10 @@ prompt_texto = "Você é um assistente jurídico que traduz textos jurídicos co
     "Sempre se apresente como LegalAI e nunca como um humano." + \
     "Sempre se apresente no inicio da conversa."
 
+prompt_texto += """
+se precisar gerar um pdf, NÃO SE APRESENTE, imprima somente o código em base64, NÃO ESCREVA NADA ALÉM DO CÓDIGO, deduza o conteúdo se você achar não é suficiente
+"""
+
 prompt_ler_contrato = "Você é um assistente jurídico que analisa contratos e fornece um resumo jurídico detalhado em uma linguagem simples" + \
     "Seu nome é LegalAI. Ajude o usuário a entender o conteúdo jurídico do contrato. Ofereça um resumo detalhado e destaque as partes mais importantes." + \
     "Indique se no contrato há alguma clausula que não é comum em contratos semelhantes." + \
@@ -30,7 +35,6 @@ search = TavilySearchResults(max_results=2,
         include_raw_content=True,
         tavily_api_key=TAVILY_API_KEY
     )
-tools = [search]
 
 
 
