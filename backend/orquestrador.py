@@ -6,12 +6,12 @@ from langchain.chat_models import init_chat_model
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import MemorySaver
+from .tools import generate_pdf
 
 GENAI_API_KEY = os.environ['GENAI_API_KEY']
 TAVILY_API_KEY = os.environ['TAVILY_API_KEY']
 
 memory = MemorySaver()
-# llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", temperature=0, api_key=GENAI_API_KEY)
 
 
 prompt_texto = "Você é um assistente jurídico que traduz textos jurídicos complexos em linguagem simples! " + \
@@ -31,6 +31,16 @@ search = TavilySearchResults(max_results=2,
         tavily_api_key=TAVILY_API_KEY
     )
 tools = [search]
+
+
+
+pdf_tool = Tool(
+    name="GerarPDF",
+    func=generate_pdf,
+    description="Gera um PDF a partir de um texto. Recebe o conteúdo como input."
+)
+
+tools = [search, pdf_tool]
 
 
 model = init_chat_model(
@@ -53,4 +63,3 @@ def analyze_text_langChain(text: str) -> str:
                 response.append(last_message.content)
 
     return "\n".join(response) if response else "Nenhuma resposta da IA."
-
