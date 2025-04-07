@@ -135,7 +135,11 @@ export default function App(){
   function handleClickDownloadPdf(pdfData: string){
     const link = document.createElement("a");
     console.log('pdfData: ', pdfData)
-    link.href = pdfData.trim().replace(/^["']+|["']+$/g, "").replace(/\s/g, ""); // tratamento da resposta;
+    link.href = pdfData
+      .trim()
+      .replace(/^["']+|["']+$/g, "")
+      .replace(/\n/g, "")
+      .replace(/\s/g, "");
     link.download = 'pdf-legalai';
     document.body.appendChild(link);
     link.click();
@@ -146,7 +150,7 @@ export default function App(){
   async function handleClickUploadContract(){
     const file = document.getElementById('file-input').files[0]
     console.log(file)
-    
+
     const formData = new FormData();
     formData.append("file", file);
   
