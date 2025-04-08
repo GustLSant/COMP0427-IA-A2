@@ -15,7 +15,7 @@ npm run dev
 # Para o Backend
 Entrar na pasta backend e executar o comando:
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.frozen.txt
 fastapi dev main.py
 ```
 
