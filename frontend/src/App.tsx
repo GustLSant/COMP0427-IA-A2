@@ -18,7 +18,7 @@ export default function App(){
 
 
   return(
-    <div className='app w-[100vw] h-[100vh] flex flex-col gap-6 bg-zinc-900 text-white'>
+    <div className='app w-[100vw] h-[100vh] overflow-hidden flex flex-col gap-6 bg-zinc-900 text-white'>
       <header className="flex justify-between items-center p-4 bg-zinc-800 shadow-01 z-20">
         <h1 className="text-xl select-none">LegalAI</h1>
         <BiMenu onClick={handleClickToggleNavbarButton} className="text-3xl hover:cursor-pointer select-none" />
