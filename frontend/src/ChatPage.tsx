@@ -128,16 +128,13 @@ export default function ChatPage(){
     }
 
 
-
-
-
     return(
         <>
             <main className="grow overflow-hidden flex justify-center px-4">
                 {
                 (messages.length === 0)
                 ?
-                <div className="flex items-center pointer-events-none">
+                <div className="flex items-center">
                     <p className="opacity-5 select-none" style={{fontSize: `clamp(16px, 20vw, 96px)`}}>LegalAI</p>
                 </div>
                 :
@@ -155,7 +152,7 @@ export default function ChatPage(){
                         }
                         else{
                             return(
-                            <div key={idx} className="">
+                            <div key={idx}>
                                 <div className="prose prose-invert" dangerouslySetInnerHTML={{__html: message.data}}></div>
                             </div>
                             )
@@ -180,14 +177,14 @@ export default function ChatPage(){
                 }
             </main>
                 
-            <footer className="flex justify-center p-4 pt-0">
+            <footer className="flex justify-center p-6 pt-0">
                 <div className="grow flex justify-between items-center md:max-w-[80vw] lg:max-w-[80vw] p-4 bg-zinc-800 shadow-01 rounded-md">
-                <textarea placeholder={(isLoading) ? "Carregando..." : "O que deseja saber?"} rows={1} cols={1} ref={textAreaRef} value={textInput} onChange={handleTextAreaChange} disabled={isLoading} onKeyDown={handleTextAreaKeyDown} className="bg-transparent-50 text-white grow resize-none" />
-                {
-                    (isLoading) ?
-                    <BiLoaderAlt className="rotate text-xl"  /> :
-                    <BiSend className="text-2xl hover:cursor-pointer" onClick={sendMessageToAi} />
-                }
+                    <textarea placeholder={(isLoading) ? "Carregando..." : "O que deseja saber?"} rows={1} cols={1} ref={textAreaRef} value={textInput} onChange={handleTextAreaChange} disabled={isLoading} onKeyDown={handleTextAreaKeyDown} className="bg-transparent-50 text-white grow resize-none" />
+                    {
+                        (isLoading) ?
+                        <BiLoaderAlt className="rotate text-xl"  /> :
+                        <BiSend className="text-2xl hover:cursor-pointer" onClick={sendMessageToAi} />
+                    }
                 </div>
             </footer>
         </>
