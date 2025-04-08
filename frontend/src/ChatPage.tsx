@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import { API_URL, Message, Response } from "./tools";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
-import { BiMenu, BiSend, BiLoaderAlt, BiDownload  } from "react-icons/bi";
+import { BiSend, BiLoaderAlt, BiDownload  } from "react-icons/bi";
 
 
 
@@ -137,8 +137,8 @@ export default function ChatPage(){
                 {
                 (messages.length === 0)
                 ?
-                <div className="flex items-center">
-                    <p className="opacity-5" style={{fontSize: `clamp(16px, 20vw, 96px)`}}>LegalAI</p>
+                <div className="flex items-center pointer-events-none">
+                    <p className="opacity-5 select-none" style={{fontSize: `clamp(16px, 20vw, 96px)`}}>LegalAI</p>
                 </div>
                 :
                 <div ref={chatRef} className="grow overflow-auto pr-2 md:max-w-[80vw] lg:max-w-[80vw] flex flex-col gap-6">
