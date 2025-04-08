@@ -134,7 +134,7 @@ export default function ChatPage(){
                 {
                 (messages.length === 0)
                 ?
-                <div className="flex items-center">
+                <div className="flex items-center fade-in">
                     <p className="opacity-5 select-none" style={{fontSize: `clamp(16px, 20vw, 96px)`}}>LegalAI</p>
                 </div>
                 :
@@ -177,7 +177,7 @@ export default function ChatPage(){
                 }
             </main>
                 
-            <footer className="flex justify-center p-6 pt-0">
+            <footer className="flex justify-center p-6 pt-0 fade-in-bottom">
                 <div className="grow flex justify-between items-center md:max-w-[80vw] lg:max-w-[80vw] p-4 bg-zinc-800 shadow-01 rounded-md">
                     <textarea placeholder={(isLoading) ? "Carregando..." : "O que deseja saber?"} rows={1} cols={1} ref={textAreaRef} value={textInput} onChange={handleTextAreaChange} disabled={isLoading} onKeyDown={handleTextAreaKeyDown} className="bg-transparent-50 text-white grow resize-none" />
                     {

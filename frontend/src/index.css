@@ -31,13 +31,30 @@ h1, h2, h3, small, span{
   box-shadow: -4px 0px 4px rgba(0,0,0, 0.15);
 }
 
+.fade-in{
+  animation: FadeIn 0.15s linear forwards;
+}
+
 .fade-in-right{
   animation: FadeInRight 0.15s linear forwards;
+}
+
+.fade-in-bottom{
+  animation: FadeInBottom 0.15s linear forwards;
 }
 
 .fade-out-right{
   animation: FadeOutRight 0.15s linear forwards;
   pointer-events: none;
+}
+
+@keyframes FadeIn {
+  0%{
+    opacity: 0%;
+  }
+  100%{
+    opacity: 100%;
+  }
 }
 
 @keyframes FadeInRight {
@@ -47,6 +64,17 @@ h1, h2, h3, small, span{
   }
   100%{
     transform: translateX(0px);
+    opacity: 100%;
+  }
+}
+
+@keyframes FadeInBottom {
+  0%{
+    transform: translateY(20px);
+    opacity: 0%;
+  }
+  100%{
+    transform: translateY(0px);
     opacity: 100%;
   }
 }
