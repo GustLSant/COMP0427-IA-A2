@@ -1,4 +1,5 @@
-export const API_URL = 'http://127.0.0.1:8000/api';
+// export const API_URL = 'http://127.0.0.1:8000/api';
+export const API_URL = 'https://comp0427-ia-a2.onrender.com/api';
 
 export type Message = {
   sender: 'user' | 'ai',
