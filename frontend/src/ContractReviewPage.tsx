@@ -64,7 +64,7 @@ export default function ContractReviewPage(){
 
     return(
         <>
-            <main className="grow overflow-hidden flex justify-center px-4">
+            <main className="grow overflow-hidden flex justify-center px-4 fade-in">
                 {
                     (aiMessage === '')
                     ?
@@ -73,13 +73,13 @@ export default function ContractReviewPage(){
                         <p className=" opacity-15 text-xl text-center">Faça o upload de um contrato abaixo para que nossa<br />inteligência artificial possa analisá-lo</p>
                     </div>
                     :
-                    <div className="grow overflow-auto pr-2 md:max-w-[80vw] lg:max-w-[80vw]">
+                    <div className="grow overflow-auto pr-2 md:max-w-[80vw] lg:max-w-[80vw] fade-in">
                         <div className="prose prose-invert" dangerouslySetInnerHTML={{__html: aiMessage}} />
                     </div>
                 }
             </main>
 
-            <footer className="flex justify-center p-6 pt-0">
+            <footer className="flex justify-center p-6 pt-0 fade-in-bottom">
                 {
                     (isLoading)
                     ?
@@ -100,7 +100,7 @@ export default function ContractReviewPage(){
                     </div>
                 }           
                 
-                <input ref={fileInputRef} onChange={handleOnChangeFileInput} type="file" name="" id="file-input" className="fixed bottom-[-100px] opacity-0" />
+                <input ref={fileInputRef} onChange={handleOnChangeFileInput} type="file" accept="application/pdf" name="" id="file-input" className="fixed bottom-[-100px] opacity-0" />
             </footer>
         </>
     )
