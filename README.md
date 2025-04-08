@@ -25,3 +25,4 @@ fastapi dev main.py
 - Gustavo Lucas Santana
 - Rafael Oliveira Rosário
 - Cristian Di Giovanni
+- Luzia dos Santos Souza Neta
