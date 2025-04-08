@@ -10,17 +10,56 @@
 }
 
 *{
-  border: none;
   outline: none;
 }
 
-h1, h2, h3, p, small, span{
+input{
+  border: none;
+}
+
+
+h1, h2, h3, small, span{
   padding: 0px;
   margin: 0px;
 }
 
 .shadow-01{
   box-shadow: 4px 4px 4px rgba(0,0,0, 0.15);
+}
+
+.shadow-01-left{
+  box-shadow: -4px 0px 4px rgba(0,0,0, 0.15);
+}
+
+.fade-in-right{
+  animation: FadeInRight 0.15s linear forwards;
+}
+
+.fade-out-right{
+  animation: FadeOutRight 0.15s linear forwards;
+  pointer-events: none;
+}
+
+@keyframes FadeInRight {
+  0%{
+    transform: translateX(20px);
+    opacity: 0%;
+  }
+  100%{
+    transform: translateX(0px);
+    opacity: 100%;
+  }
+}
+
+@keyframes FadeOutRight {
+  0%{
+    transform: translateX(0px);
+    opacity: 100%;
+  }
+  100%{
+    transform: translateX(20px);
+    opacity: 0%;
+  }
 }
 
 .rotate{
