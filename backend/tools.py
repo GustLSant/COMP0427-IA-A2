@@ -6,7 +6,7 @@ def generate_pdf(content: str):
     pdf = FPDF()
     pdf.add_page()
 
-    pdf.set_font("helvetica", size=11)
+    pdf.set_font("times", size=11)
     pdf.multi_cell(0, 10, content)
 
     pdf_bytes = pdf.output()
