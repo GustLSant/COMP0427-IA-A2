@@ -2,12 +2,12 @@
 A2 - TRABALHO
 
 ## Acesso
-https://legalai-trabalho.vercel.app/ (interface do usuário)
+https://legalai-trabalho.vercel.app/ (interface do usuário)  
 https://comp0427-ia-a2.onrender.com/docs (documentação do servidor)
 
 ## Requisitos
 
-Python - https://www.python.org/downloads/
+Python - https://www.python.org/downloads/  
 Node.js - https://nodejs.org/en
 
 ## Instruções de execução
