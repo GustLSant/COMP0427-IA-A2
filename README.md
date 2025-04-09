@@ -1,9 +1,14 @@
 # 2024.2 - INTELIGÊNCIA ARTIFICIAL - Turma 01
 A2 - TRABALHO
 
+## Acesso
+https://legalai-trabalho.vercel.app/ (interface do usuário)
+https://comp0427-ia-a2.onrender.com/docs (documentação do servidor)
+
 ## Requisitos
 
-COLOCAR
+Python - https://www.python.org/downloads/
+Node.js - https://nodejs.org/en
 
 ## Instruções de execução
 # Para o Frontend
